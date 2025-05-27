@@ -4,7 +4,7 @@ project ("luau")
 
 add_subdirectory(luau)
 add_library(luau SHARED "luau.cpp" "luau.h")
-target_link_libraries(luau PRIVATE Luau.VM Luau.Compiler)
+target_link_libraries(luau PRIVATE Luau.VM Luau.Compiler Luau.CodeGen)
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET luau PROPERTY CXX_STANDARD 20)

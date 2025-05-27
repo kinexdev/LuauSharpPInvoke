@@ -9,7 +9,7 @@
 lua_State* Luau_newstate() { return luaL_newstate(); }
 lua_State* Luau_newthread(lua_State* L) { return lua_newthread(L); }
 
-char* Luau_compile(const char* source, size_t* size) { return luau_compile(source, strlen(source), nullptr, size); }
+LUAU_API char* Luau_compile(const char* source, lua_CompileOptions* options, size_t* size) { return luau_compile(source, strlen(source), options, size); }
 
 void Luau_sandboxthread(lua_State* L) { luaL_sandboxthread(L); }
 void Luau_close(lua_State* L) { lua_close(L); }
@@ -55,9 +55,8 @@ int Luau_pcall(lua_State* L, int nargs, int nresults, int errfunc) { return lua_
 
 int Luau_load(lua_State* L, const char* chunkname, const char* data, size_t size, int env) { return luau_load(L, chunkname, data, size, env); }
 int Luau_gettop(lua_State* L) { return lua_gettop(L); }
-// void Luau_pushliterals(lua_State* L, const char* s) {lua_pushlstring(L, "" s, (sizeof(s) / sizeof(char)) - 1);}
 
-void Luau_pushcfunction(lua_State* L, lua_CFunction fn, const char* debugname) { lua_pushcclosurek(L, fn, debugname, 0, NULL); }
+void Luau_pushcfunction(lua_State* L, lua_CFunction fn) { lua_pushcfunction(L, fn, ""); }
 void Luau_pushcclosure(lua_State* L, lua_CFunction fn, const char* debugname, int nup) { lua_pushcclosurek(L, fn, debugname, nup, NULL); }
 void Luau_pushnumber(lua_State* L, double n) { lua_pushnumber(L, n); }
 void Luau_pushnil(lua_State* L) { lua_pushnil(L); }
@@ -82,3 +81,11 @@ void* Luau_newuserdata(lua_State* L, size_t s) { return lua_newuserdatatagged(L,
 int Luau_resume(lua_State* L, lua_State* from, int nargs) { return lua_resume(L, from, nargs); }
 
 void Luau_setsafeenv(lua_State* L, int objindex, int enabled) { lua_setsafeenv(L, objindex, enabled); }
+
+LUAU_API int Luau_codegen_supported() { return luau_codegen_supported(); }
+
+LUAU_API void Luau_codegen_create(lua_State* L) { luau_codegen_create(L); }
+
+LUAU_API void Luau_codegen_compile(lua_State* L, int idx) { luau_codegen_compile(L, idx); }
+
+LUAU_API void Luau_free(void* ptr) { free(ptr); }
